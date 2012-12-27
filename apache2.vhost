@@ -1,0 +1,35 @@
+<VirtualHost *:80>
+    ServerName  ##SITENAME##
+    ServerAlias ##SITENAME##.localhost
+    ServerAlias ##SITENAME##.##HOSTNAME##
+ 
+    DocumentRoot ##DIR##/var/www/##SITENAME##/public_html/
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride All
+    </Directory>
+    <Directory ##DIR##/var/www/##SITENAME##/public_html/>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride All
+        Order allow,deny
+        allow from all
+    </Directory>
+ 
+    ErrorLog ${APACHE_LOG_DIR}/##SITENAME##_error.log
+ 
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
+ 
+    CustomLog ${APACHE_LOG_DIR}/##SITENAME##_access.log combined
+ 
+    Alias /doc/ "/usr/share/doc/"
+    <Directory "/usr/share/doc/">
+        Options Indexes MultiViews FollowSymLinks
+        AllowOverride None
+        Order deny,allow
+        Deny from all
+        Allow from 127.0.0.0/255.0.0.0 ::1/128
+    </Directory>
+ 
+</VirtualHost>

@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<!-- 
+  @file
+  Sets up a virtual host for apache
+  Assumes a Debian-style linux environment; may need work for other distros
+
+  Inspired by Phillip Norton's article:
+  http://www.hashbangcode.com/blog/using-phing-create-apache-virtual-hosts-626.html
+
+  @todo other properties?
+    choose between userdir or system /var/www/
+    property for wwwroot dir path ?
+    apache user (default www-data)
+    wwwroot dir name (default public_html)
+    whether to have sitename.localhost and sitename.hostname aliases
+
+  @todo NO keep logs in user dir too? log dir sibling of public_html. (only if userdir, not system dir)
+  -->
+<project name="Create Apache Virtual Host" default="main">
+
+  <target name="main" depends="init">
+    <echo>Creating ${sitename}</echo>
+
+    <phingcall target="hosts-file" />
+    <phingcall target="site-dir" />
+    <phingcall target="vhost-template" />
+    <phingcall target="start-site" />
+
+    <echo>Done!</echo>
+  </target>
+
+  <target name="init">
+    <!-- initialize build properties -->
+    <property file="./build.properties" />
+
+    <!-- sitename is essential, otherwise we won't proceeed -->
+    <propertyprompt propertyName="sitename" defaultvalue="" promptText="Enter site name" promptCharacter=":" />
+    <if>
+      <equals arg1="${sitename}" arg2="" trim="true" />
+      <then>
+        <fail message="FAILURE: No site name entered" />
+      </then>
+    </if>
+  </target>
+
+ <target name="site-dir">
+    <!-- create site directory -->
+    <trycatch>
+      <try>
+        <mkdir dir="${user.home}/var/www/${sitename}/public_html" />
+        <!-- @todo
+                chmod?
+                chown? e.g. www-data group
+                set special bits?
+                setup other directories, e.g. ${sitename}/backups ?
+            -->
+      </try>
+      <catch>
+        <fail message="FAILURE: problem setting up the site directory" />
+      </catch>
+    </trycatch>
+  </target>
+
+  <target name="hosts-file">
+    <!-- update hosts file
+      @todo test if these lines have already been written in the hosts file...
+      -->
+    <trycatch>
+      <try>
+        <append destFile="/etc/hosts" text="${line.separator}" />
+        <append destFile="/etc/hosts" text="${line.separator}127.0.0.1  ${sitename}" />
+        <append destFile="/etc/hosts" text="${line.separator}127.0.0.1  ${sitename}.localhost" />
+        <append destFile="/etc/hosts" text="${line.separator}127.0.0.1  ${sitename}.${host.name}" />
+      </try>
+      <catch>
+        <fail message="FAILURE: problem writing entry in hosts file." />
+      </catch>
+    </trycatch>
+  </target>
+
+  <target name="vhost-template">
+    <!-- create vhost file for the site -->
+    <copy file="apache2.vhost.template" tofile="/etc/apache2/sites-available/${sitename}" overwrite="true" haltonerror="true">
+      <filterchain>           
+        <replacetokens begintoken="##" endtoken="##">
+          <token key="SITENAME" value="${sitename}" />
+          <token key="HOSTNAME" value="${host.name}" />
+          <token key="DIR" value="${user.home}" />
+        </replacetokens>
+      </filterchain>
+    </copy>
+  </target>
+
+  <target name="start-site">
+    <!-- enable site, if required -->
+    <if>
+      <equals arg1="${apache.enable}" arg2="true" trim="true" casesensitive="false" />
+      <then>
+        <echo>APACHE: enabling site.</echo>
+        <exec command="a2ensite ${sitename}" checkreturn="true" />
+      </then>
+      <else>
+        <echo>OMIT: not enabling site.</echo>
+      </else>
+    </if>
+
+    <!-- restart apache server if required -->
+    <if>
+      <equals arg1="${apache.restart}" arg2="true" trim="true" casesensitive="false" />
+      <then>
+        <echo>APACHE: restarting server.</echo>
+        <exec command="apache2ctl -k restart" checkreturn="true" />
+      </then>
+      <else>
+        <echo>OMIT: not restarting server.</echo>
+      </else>
+    </if>
+  </target>
+ 
+</project> 
