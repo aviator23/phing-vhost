@@ -12,7 +12,9 @@
     property for wwwroot dir path ?
     apache user (default www-data)
     wwwroot dir name (default public_html)
-    whether to have sitename.localhost and sitename.hostname aliases
+
+    alias.localhost=false default
+    alias.hostname=false default
 
   @todo NO keep logs in user dir too? log dir sibling of public_html. (only if userdir, not system dir)
   -->
