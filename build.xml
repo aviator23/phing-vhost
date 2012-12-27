@@ -30,8 +30,18 @@
   </target>
 
   <target name="init">
-    <!-- initialize build properties -->
-    <property file="./build.properties" />
+
+    <!-- default properties -->
+    <property name="apache.enable" value="true" />
+    <property name="apache.restart" value="true" />
+
+    <!-- load properties from file, override defaults -->
+    <if>
+      <available type="file" file="build.properties" />
+      <then>
+        <property file="./build.properties" override="true"/>
+      </then>
+    </if>
 
     <!-- sitename is essential, otherwise we won't proceeed -->
     <propertyprompt propertyName="sitename" defaultvalue="" promptText="Enter site name" promptCharacter=":" />
