@@ -13,9 +13,6 @@
     apache user (default www-data)
     wwwroot dir name (default public_html)
 
-    <property name="alias.localhost" value="false" />
-    <property name="alias.hostname" value="false" />
-
   @todo NO keep logs in user dir too? log dir sibling of public_html. (only if userdir, not system dir)
   -->
 <project name="Create Apache Virtual Host" default="main">
@@ -74,15 +71,48 @@
   </target>
 
   <target name="hosts-file">
-    <!-- update hosts file
-      @todo test if these lines have already been written in the hosts file...
-      -->
+    <!-- write entries to hosts file if necessary.
+         check for any existing entries in the hosts file
+         which match the desired sitename
+         -->
+    <loadfile property="hosts.existing" file="/etc/hosts">
+      <filterchain>
+        <linecontains>
+          <contains value="${sitename}" />
+        </linecontains>
+      </filterchain>
+    </loadfile>
+
+    <!-- @todo could this be any less verbose? -->
     <trycatch>
       <try>
-        <append destFile="/etc/hosts" text="${line.separator}" />
-        <append destFile="/etc/hosts" text="${line.separator}127.0.0.1  ${sitename}" />
-        <append destFile="/etc/hosts" text="${line.separator}127.0.0.1  ${sitename}.localhost" />
-        <append destFile="/etc/hosts" text="${line.separator}127.0.0.1  ${sitename}.${host.name}" />
+        <!-- write sitename to hosts file -->
+        <if>
+          <not>
+            <contains string="${hosts.existing}" substring="${sitename}" />
+          </not>
+          <then>
+            <append destFile="/etc/hosts" text="${line.separator}127.0.0.1  ${sitename}" />
+          </then>
+        </if>
+        <!-- write sitename.hostname to hosts file -->
+        <if>
+          <not>
+            <contains string="${hosts.existing}" substring="${sitename}.${host.name}" />
+          </not>
+          <then>
+            <append destFile="/etc/hosts" text="${line.separator}127.0.0.1  ${sitename}.${host.name}" />
+          </then>
+        </if>
+        <!-- write sitename.localhost to hosts file -->
+        <if>
+          <not>
+            <contains string="${hosts.existing}" substring="${sitename}.localhost" />
+          </not>
+          <then>
+            <append destFile="/etc/hosts" text="${line.separator}127.0.0.1  ${sitename}.localhost" />
+          </then>
+        </if>
       </try>
       <catch>
         <fail message="FAILURE: problem writing entry in hosts file." />
