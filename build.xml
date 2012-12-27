@@ -55,7 +55,7 @@
     </if>
   </target>
 
- <target name="site-dir">
+  <target name="site-dir">
     <!-- create site directory -->
     <trycatch>
       <try>
