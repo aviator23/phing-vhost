@@ -44,7 +44,7 @@
     </if>
 
     <!-- sitename is essential, otherwise we won't proceeed -->
-    <propertyprompt propertyName="sitename" defaultvalue="" promptText="Enter site name" promptCharacter=":" />
+    <propertyprompt propertyName="sitename" defaultvalue="" useExistingValue="true" promptText="Enter site name" promptCharacter=":" />
     <if>
       <equals arg1="${sitename}" arg2="" trim="true" />
       <then>
