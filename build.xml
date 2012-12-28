@@ -21,7 +21,7 @@
 
     <phingcall target="hosts-file" />
     <phingcall target="site-dir" />
-    <phingcall target="vhost-template" />
+    <phingcall target="vhost-file" />
     <phingcall target="start-site" />
 
     <echo>Done!</echo>
@@ -118,7 +118,7 @@
     </trycatch>
   </target>
 
-  <target name="vhost-template">
+  <target name="vhost-file">
     <copy file="apache2.vhost.template" tofile="/etc/apache2/sites-available/${sitename}" overwrite="true" haltonerror="true">
       <filterchain>
         <replacetokens begintoken="##" endtoken="##">
