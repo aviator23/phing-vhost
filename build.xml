@@ -20,8 +20,8 @@
     <echo>Creating ${sitename}</echo>
 
     <phingcall target="update-hosts-file" />
-    <phingcall target="site-dir" />
-    <phingcall target="vhost-file" />
+    <phingcall target="make-site-dir" />
+    <phingcall target="make-vhost-file" />
     <phingcall target="start-site" />
 
     <echo>Done!</echo>
@@ -51,7 +51,7 @@
     </if>
   </target>
 
-  <target name="site-dir">
+  <target name="make-site-dir">
     <!-- create site directory -->
     <trycatch>
       <try>
@@ -110,7 +110,7 @@
     </if>
   </target>
 
-  <target name="vhost-file">
+  <target name="make-vhost-file">
     <copy file="apache2.vhost.template" tofile="/etc/apache2/sites-available/${sitename}" overwrite="true" haltonerror="true">
       <filterchain>
         <replacetokens begintoken="##" endtoken="##">
