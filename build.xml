@@ -33,7 +33,7 @@
     <property name="apache.enable" value="true" />
     <property name="apache.restart" value="true" />
 
-    <!-- load properties from file, override defaults -->
+    <!-- optional properties file, override defaults -->
     <if>
       <available type="file" file="build.properties" />
       <then>
@@ -52,7 +52,6 @@
   </target>
 
   <target name="make-site-dir">
-    <!-- create site directory -->
     <trycatch>
       <try>
         <mkdir dir="${user.home}/var/www/${sitename}/public_html" />
@@ -99,7 +98,6 @@
   </target>
 
   <target name="append-hostname">
-    <!-- appends an entry to the host file -->
     <if>
       <not>
         <contains string="${hosts.existing}" substring="${host.new}" />
