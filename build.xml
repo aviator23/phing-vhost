@@ -19,7 +19,7 @@
   <target name="main" depends="init">
     <echo>Creating ${sitename}</echo>
 
-    <phingcall target="hosts-file" />
+    <phingcall target="update-hosts-file" />
     <phingcall target="site-dir" />
     <phingcall target="vhost-file" />
     <phingcall target="start-site" />
@@ -69,9 +69,9 @@
     </trycatch>
   </target>
 
-  <target name="hosts-file">
+  <target name="update-hosts-file">
     <!-- Write entries to hosts file if necessary.
-         First check if any existing entries match the desired sitename.
+         First get any existing entries which match the desired sitename.
          -->
     <loadfile property="hosts.existing" file="/etc/hosts">
       <filterchain>
@@ -81,41 +81,33 @@
       </filterchain>
     </loadfile>
 
-    <!-- @todo could this be any less verbose? -->
+    <!-- we'll add 3 different versions of sitename to hosts file -->
+    <property name="hosts.variants"
+              value="${sitename},
+                     ${sitename}.${host.name},
+                     ${sitename}.localhost"
+                     />
+
     <trycatch>
       <try>
-        <!-- sitename -->
-        <if>
-          <not>
-            <contains string="${hosts.existing}" substring="${sitename}" />
-          </not>
-          <then>
-            <append destFile="/etc/hosts" text="${line.separator}127.0.0.1  ${sitename}" />
-          </then>
-        </if>
-        <!-- sitename.hostname -->
-        <if>
-          <not>
-            <contains string="${hosts.existing}" substring="${sitename}.${host.name}" />
-          </not>
-          <then>
-            <append destFile="/etc/hosts" text="${line.separator}127.0.0.1  ${sitename}.${host.name}" />
-          </then>
-        </if>
-        <!-- sitename.localhost -->
-        <if>
-          <not>
-            <contains string="${hosts.existing}" substring="${sitename}.localhost" />
-          </not>
-          <then>
-            <append destFile="/etc/hosts" text="${line.separator}127.0.0.1  ${sitename}.localhost" />
-          </then>
-        </if>
+        <foreach list="${hosts.variants}" param="host.new" target="append-hostname" />
       </try>
       <catch>
-        <fail message="FAILURE: problem writing entry in hosts file." />
+        <fail message="FAILURE: problem writing entries in hosts file." />
       </catch>
     </trycatch>
+  </target>
+
+  <target name="append-hostname">
+    <!-- appends an entry to the host file -->
+    <if>
+      <not>
+        <contains string="${hosts.existing}" substring="${host.new}" />
+      </not>
+      <then>
+        <append destFile="/etc/hosts" text="${line.separator}127.0.0.1  ${host.new}" />
+      </then>
+    </if>
   </target>
 
   <target name="vhost-file">
