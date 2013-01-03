@@ -114,7 +114,6 @@
         <replacetokens begintoken="##" endtoken="##">
           <token key="SITENAME" value="${sitename}" />
           <token key="HOSTNAME" value="${host.name}" />
-          <token key="DIR" value="${user.home}" />
         </replacetokens>
       </filterchain>
     </copy>

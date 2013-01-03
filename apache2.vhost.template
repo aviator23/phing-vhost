@@ -3,12 +3,12 @@
     ServerAlias ##SITENAME##.localhost
     ServerAlias ##SITENAME##.##HOSTNAME##
 
-    DocumentRoot ##DIR##/var/www/##SITENAME##/public_html/
+    DocumentRoot /var/www/##SITENAME##/public_html/
     <Directory />
         Options FollowSymLinks
         AllowOverride All
     </Directory>
-    <Directory ##DIR##/var/www/##SITENAME##/public_html/>
+    <Directory /var/www/##SITENAME##/public_html/>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride All
         Order allow,deny
