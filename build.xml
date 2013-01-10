@@ -54,7 +54,7 @@
   <target name="make-site-dir">
     <trycatch>
       <try>
-        <mkdir dir="${user.home}/var/www/${sitename}/public_html" />
+        <mkdir dir="/var/www/${sitename}/public_html" />
         <!-- @todo
                 chmod?
                 chown? e.g. www-data group
