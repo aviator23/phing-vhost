@@ -1,29 +1,29 @@
 <VirtualHost *:80>
-    ServerName  ##SITENAME##
+    ServerName  ${sitename}
 
     # server aliases for convenience, disambiguate on local network.
-    ServerAlias ##SITENAME##.localhost
-    ServerAlias ##SITENAME##.##HOSTNAME##
+    ServerAlias ${sitename}.localhost
+    ServerAlias ${sitename}.${host.name}
 
-    DocumentRoot /var/www/##SITENAME##/public_html/
+    DocumentRoot /var/www/${sitename}/public_html/
     <Directory />
         Options FollowSymLinks
         AllowOverride All
     </Directory>
-    <Directory /var/www/##SITENAME##/public_html/>
+    <Directory /var/www/${sitename}/public_html/>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride All
         Order allow,deny
         allow from all
     </Directory>
 
-    ErrorLog ${APACHE_LOG_DIR}/##SITENAME##_error.log
+    ErrorLog ${APACHE_LOG_DIR}/${sitename}_error.log
 
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
     LogLevel warn
 
-    CustomLog ${APACHE_LOG_DIR}/##SITENAME##_access.log combined
+    CustomLog ${APACHE_LOG_DIR}/${sitename}_access.log combined
 
     Alias /doc/ "/usr/share/doc/"
     <Directory "/usr/share/doc/">

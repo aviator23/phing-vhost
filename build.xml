@@ -114,10 +114,7 @@
   <target name="make-vhost-file">
     <copy file="apache2.vhost.template" tofile="/etc/apache2/sites-available/${sitename}" overwrite="true" haltonerror="true">
       <filterchain>
-        <replacetokens begintoken="##" endtoken="##">
-          <token key="SITENAME" value="${sitename}" />
-          <token key="HOSTNAME" value="${host.name}" />
-        </replacetokens>
+        <expandproperties />
       </filterchain>
     </copy>
   </target>
