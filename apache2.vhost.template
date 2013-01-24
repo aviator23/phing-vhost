@@ -1,5 +1,7 @@
 <VirtualHost *:80>
     ServerName  ##SITENAME##
+
+    # server aliases for convenience, disambiguate on local network.
     ServerAlias ##SITENAME##.localhost
     ServerAlias ##SITENAME##.##HOSTNAME##
 
