@@ -6,14 +6,12 @@
   Inspired by Phillip Norton's article:
   http://www.hashbangcode.com/blog/using-phing-create-apache-virtual-hosts-626.html
 
-  @todo other properties?
+  @todo site dir path properties?
     choose between userdir or system /var/www/
-    property for wwwroot dir path ?
-    apache user (default www-data)
     wwwroot dir name (default public_html)
 
-  @todo NO keep logs in user dir too? log dir sibling of public_html. (only if userdir, not system dir)
-  -->
+  @todo setup other directories, e.g. ${sitename}/backups ?
+-->
 <project name="Create Apache Virtual Host" default="main">
 
   <target name="main" depends="init">
@@ -65,10 +63,6 @@
             </patternset>
           </fileset>
         </chown>
-        <!-- @todo
-                set special bits?
-                setup other directories, e.g. ${sitename}/backups ?
-            -->
       </try>
       <catch>
         <fail message="FAILURE: problem setting up the site directory" />
