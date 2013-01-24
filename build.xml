@@ -58,8 +58,14 @@
     <trycatch>
       <try>
         <mkdir dir="/var/www/${sitename}/public_html" mode="${sitedir.perms}" />
+        <chown user="${sitedir.user}" group="${sitedir.group}">
+          <fileset dir="/var/www/${sitename}">
+            <patternset>
+              <include name="**"/>
+            </patternset>
+          </fileset>
+        </chown>
         <!-- @todo
-                chown? sitedir.user and sitedir.group
                 set special bits?
                 setup other directories, e.g. ${sitename}/backups ?
             -->
