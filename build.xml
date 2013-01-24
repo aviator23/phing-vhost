@@ -32,6 +32,9 @@
     <!-- default properties -->
     <property name="apache.enable" value="true" />
     <property name="apache.restart" value="true" />
+    <property name="sitedir.user" value="www-data" />
+    <property name="sitedir.group" value="www-data" />
+    <property name="sitedir.perms" value="755" />
 
     <!-- optional properties file, override defaults -->
     <if>
@@ -56,8 +59,8 @@
       <try>
         <mkdir dir="/var/www/${sitename}/public_html" />
         <!-- @todo
-                chmod?
-                chown? e.g. www-data group
+                chmod? sitedir.perms
+                chown? sitedir.user and sitedir.group
                 set special bits?
                 setup other directories, e.g. ${sitename}/backups ?
             -->
