@@ -27,7 +27,15 @@
 
   <target name="init">
 
-    <!-- default properties -->
+    <!-- optional properties file -->
+    <if>
+      <available type="file" file="build.properties" />
+      <then>
+        <property file="./build.properties" override="false"/>
+      </then>
+    </if>
+
+    <!-- default property values; fallback values for any properties not already assigned. -->
     <property name="apache.enable" value="true" />
     <property name="apache.restart" value="true" />
     <property name="sitedir.path" value="/var/www/${sitename}/public_html/" />
@@ -35,15 +43,7 @@
     <property name="sitedir.group" value="www-data" />
     <property name="sitedir.perms" value="755" />
 
-    <!-- optional properties file, override defaults -->
-    <if>
-      <available type="file" file="build.properties" />
-      <then>
-        <property file="./build.properties" override="true"/>
-      </then>
-    </if>
-
-    <!-- sitename is essential, otherwise we won't proceeed -->
+    <!-- sitename property must be provided by user, we won't proceeed -->
     <propertyprompt propertyName="sitename" defaultvalue="" useExistingValue="true" promptText="Enter site name" promptCharacter=":" />
     <if>
       <equals arg1="${sitename}" arg2="" trim="true" />
