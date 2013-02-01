@@ -30,6 +30,7 @@
     <!-- default properties -->
     <property name="apache.enable" value="true" />
     <property name="apache.restart" value="true" />
+    <property name="sitedir.path" value="/var/www/${sitename}/public_html/" />
     <property name="sitedir.user" value="www-data" />
     <property name="sitedir.group" value="www-data" />
     <property name="sitedir.perms" value="755" />
@@ -55,9 +56,9 @@
   <target name="make-site-dir">
     <trycatch>
       <try>
-        <mkdir dir="/var/www/${sitename}/public_html" mode="${sitedir.perms}" />
+        <mkdir dir="${sitedir.path}" mode="${sitedir.perms}" />
         <chown user="${sitedir.user}" group="${sitedir.group}">
-          <fileset dir="/var/www/${sitename}">
+          <fileset dir="${sitedir.path}">
             <patternset>
               <include name="**"/>
             </patternset>
