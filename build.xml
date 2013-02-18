@@ -100,7 +100,7 @@
     </trycatch>
   </target>
 
-  <target name="append-hostname">
+  <target name="append-hostname" hidden="true">
     <if>
       <not>
         <contains string="${hosts.existing}" substring="${host.new}" />
