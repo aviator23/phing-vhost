@@ -53,7 +53,7 @@
     </if>
   </target>
 
-  <target name="make-site-dir">
+  <target name="make-site-dir" depends="init">
     <trycatch>
       <try>
         <mkdir dir="${sitedir.path}" mode="${sitedir.perms}" />
@@ -71,7 +71,7 @@
     </trycatch>
   </target>
 
-  <target name="update-hosts-file">
+  <target name="update-hosts-file" depends="init">
     <!-- Write entries to hosts file if necessary.
          First get any existing entries which match the desired sitename.
          -->
@@ -100,7 +100,7 @@
     </trycatch>
   </target>
 
-  <target name="append-hostname" hidden="true">
+  <target name="append-hostname" depends="init" hidden="true">
     <if>
       <not>
         <contains string="${hosts.existing}" substring="${host.new}" />
@@ -111,7 +111,7 @@
     </if>
   </target>
 
-  <target name="make-vhost-file">
+  <target name="make-vhost-file" depends="init">
     <copy file="apache2.vhost.template" tofile="/etc/apache2/sites-available/${sitename}" overwrite="true" haltonerror="true">
       <filterchain>
         <expandproperties />
@@ -119,7 +119,7 @@
     </copy>
   </target>
 
-  <target name="start-site">
+  <target name="start-site" depends="init">
     <!-- enable site, if required -->
     <if>
       <equals arg1="${apache.enable}" arg2="true" trim="true" casesensitive="false" />
