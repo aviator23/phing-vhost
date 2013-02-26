@@ -6,10 +6,7 @@
     ServerAlias ${sitename}.${host.name}
 
     DocumentRoot ${sitedir.path}
-    <Directory />
-        Options FollowSymLinks
-        AllowOverride All
-    </Directory>
+
     <Directory ${sitedir.path}>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride All
