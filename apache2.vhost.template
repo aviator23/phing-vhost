@@ -1,23 +1,23 @@
 <VirtualHost *:80>
-    ServerName  ${sitename}
+  ServerName  ${sitename}
 
-    # server aliases for convenience, disambiguate on local network.
-    ServerAlias ${sitename}.localhost
-    ServerAlias ${sitename}.${host.name}
+  # server aliases for convenience, disambiguate on local network.
+  ServerAlias ${sitename}.localhost
+  ServerAlias ${sitename}.${host.name}
 
-    DocumentRoot ${sitedir.path}
+  DocumentRoot ${sitedir.path}
 
-    <Directory ${sitedir.path}>
-        Options Indexes FollowSymLinks MultiViews
-        AllowOverride All
-        Order allow,deny
-        allow from all
-    </Directory>
+  <Directory ${sitedir.path}>
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride All
+    Order allow,deny
+    allow from all
+  </Directory>
 
-    ErrorLog ${APACHE_LOG_DIR}/${sitename}_error.log
+  ErrorLog ${APACHE_LOG_DIR}/${sitename}_error.log
 
-    LogLevel warn
+  LogLevel warn
 
-    CustomLog ${APACHE_LOG_DIR}/${sitename}_access.log combined
+  CustomLog ${APACHE_LOG_DIR}/${sitename}_access.log combined
 
 </VirtualHost>
