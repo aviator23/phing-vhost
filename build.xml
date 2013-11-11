@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!-- 
+<!--
   Sets up a virtual host for apache
   Assumes a Debian-style linux environment; may need work for other distros
 
@@ -10,7 +10,7 @@
     choose between userdir or system /var/www/
     wwwroot dir name (default public_html)
 
-  @todo setup other directories, e.g. ${sitename}/backups ?
+  @todo setup other directories, e.g. ${sitename}/drush_sql_dump ?
 -->
 <project name="Create Apache Virtual Host" default="main">
 
