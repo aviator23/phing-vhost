@@ -112,7 +112,7 @@
   </target>
 
   <target name="make-vhost-file" depends="init">
-    <copy file="apache2.vhost.template" tofile="/etc/apache2/sites-available/${sitename}" overwrite="true" haltonerror="true">
+    <copy file="apache2.vhost.template" tofile="/etc/apache2/sites-available/${sitename}.conf" overwrite="true" haltonerror="true">
       <filterchain>
         <expandproperties />
       </filterchain>
