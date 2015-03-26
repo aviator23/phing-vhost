@@ -38,7 +38,7 @@
     <!-- default property values; fallback values for any properties not already assigned. -->
     <property name="apache.enable" value="true" />
     <property name="apache.restart" value="true" />
-    <property name="sitedir.path" value="/var/www/${sitename}/public_html/" />
+    <property name="sitedir.path" value="/var/www/vhosts/${sitename}/" />
     <property name="sitedir.user" value="www-data" />
     <property name="sitedir.group" value="www-data" />
     <property name="sitedir.perms" value="755" />
